@@ -84,6 +84,22 @@ namespace AutoTapTap1
         public bool BREnded = false;
         public Stopwatch vldTimer = new Stopwatch();
         public Stopwatch TimeSinceReadingStarted = new Stopwatch();//Used for bytes=this*(hertz * channels * 8/16bit AKA 1 or 2)
+
+        #region HitFX timers
+        /// <summary>
+        /// Will only appear for about 50 millisecs
+        /// </summary>
+        public Stopwatch leftfx = new Stopwatch();
+        /// <summary>
+        /// Will only appear for about 50 millisecs
+        /// </summary>
+        public Stopwatch centrefx = new Stopwatch();
+        /// <summary>
+        /// Will only appear for about 50 millisecs
+        /// </summary>
+        public Stopwatch rightfx = new Stopwatch();
+        #endregion
+
         #endregion
         #region Note making variables
         public bool Waiting = false;
@@ -163,7 +179,7 @@ namespace AutoTapTap1
             if (ti9 == 3)
                 tt = TapperRail.centre;
             #endregion
-            BytesPerSecond = BytesPerSample* SamplesPerSecond;
+            BytesPerSecond = BytesPerSample * SamplesPerSecond;
             timer.Start();
         }
         #endregion
@@ -178,7 +194,7 @@ namespace AutoTapTap1
                 long elaspedtimestatic = time.ElapsedMilliseconds;
                 time.Restart();
                 VFirst = VSec;
-                e.Graphics.Clear(Color.FromArgb(fail, Convert.ToInt32(feeling*1.5), intensity));
+                e.Graphics.Clear(Color.FromArgb(fail, Convert.ToInt32(feeling * 1.5), intensity));
                 #region volbar
                 if (BytesPerSample == 1)
                 {
@@ -205,6 +221,21 @@ namespace AutoTapTap1
                         VolLines.Add(new VolLineDisplay(Convert.ToInt32(mi / 65536.0 * 100.0)));
                 }
                 #endregion
+                #region HitFX
+                if (leftfx.ElapsedMilliseconds >= 50)
+                    leftfx.Stop();
+                if (centrefx.ElapsedMilliseconds >= 50)
+                    centrefx.Stop();
+                if (rightfx.ElapsedMilliseconds > 50)
+                    rightfx.Stop();
+
+                if (leftfx.ElapsedMilliseconds != 0)
+                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)((50 - leftfx.ElapsedMilliseconds) * 127 / 50.0), 255, 200, 200)), 100, 440, 50, 30);
+                if (centrefx.ElapsedMilliseconds != 0)
+                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)((50 - centrefx.ElapsedMilliseconds) * 127 / 50.0), 255, 255, 200)), 180, 440, 50, 30);
+                if (rightfx.ElapsedMilliseconds != 0)
+                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)((50 - rightfx.ElapsedMilliseconds) * 127 / 50.0), 200, 255, 200)), 260, 440, 50, 30);
+                #endregion
                 #region for loop for notes
                 for (int Count = 0; Count < notes.Count; Count++)
                 {
@@ -220,15 +251,15 @@ namespace AutoTapTap1
                         HasDeleted = true;
                     }
                     if (n.y > 600) { score -= 100; streak = 0; multiplier = 1; notes.RemoveAt(Count); HasDeleted = true; AccuracyDisplay.Text = "MISS!"; if (fail < 180) fail += 75; else fail = 255; }
-                    #region tapperstuff :)
+                    #region tapper drawing
                     if (n.y < 600)
                     {
                         if (n.tr == TapperRail.left)
-                            e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb(255,30,20)), 100, n.y, 50, 20);
+                            e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb(255, 30, 20)), 100, n.y, 50, 20);
                         if (n.tr == TapperRail.centre)
-                            e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb(255,230,30)), 180, n.y, 50, 20);
+                            e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb(255, 230, 30)), 180, n.y, 50, 20);
                         if (n.tr == TapperRail.right)
-                            e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb(20,255,20)), 260, n.y, 50, 20);
+                            e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb(20, 255, 20)), 260, n.y, 50, 20);
                     }
                     #endregion
                     if (!HasDeleted)
@@ -765,7 +796,7 @@ namespace AutoTapTap1
                     {
                         label4.BackColor = Color.FromArgb(feeling * 2, 100, feeling * 2); label5.BackColor = Color.FromArgb(feeling * 2, 100, feeling * 2);
                     }
-                    label4.Location = new Point(165, 50 - (2 ^ (Convert.ToInt32(feeling*2))));
+                    label4.Location = new Point(165, 50 - (2 ^ (Convert.ToInt32(feeling * 2))));
                     label5.Location = new Point(235, 50 - (2 ^ (Convert.ToInt32(intensity))));
                 }
                 catch { }
@@ -852,9 +883,7 @@ namespace AutoTapTap1
                 #region Note hit check
                 if (n.Tappable)
                 {
-                    if ((e.KeyChar == Convert.ToChar("i") && n.tr == TapperRail.left) ||
-                        (e.KeyChar == Convert.ToChar("o") && n.tr == TapperRail.centre) ||
-                        (e.KeyChar == Convert.ToChar("p") && n.tr == TapperRail.right))
+                    if (e.KeyChar == Convert.ToChar("i") && n.tr == TapperRail.left)
                     {
                         #region POINTS!!!!
                         if (n.IsBetween(490, 510)) { score += 600 * multiplier; streak++; AccuracyDisplay.Text = "PERFECT!"; }
@@ -863,6 +892,35 @@ namespace AutoTapTap1
                         else if (n.IsBetween(450, 550)) { score += 100 * multiplier; streak++; AccuracyDisplay.Text = "NORMAL!"; }
                         else if (n.IsBetween(420, 585)) { score += 50 * multiplier; streak++; AccuracyDisplay.Text = "BAD"; }
                         #endregion
+                        leftfx.Start();
+                        AnyChosenAtAll = true;
+                        n.IsToDelete = true;
+                        break;
+                    }
+                    if (e.KeyChar == Convert.ToChar("o") && n.tr == TapperRail.centre)
+                    {
+                        #region POINTS!!!!
+                        if (n.IsBetween(490, 510)) { score += 600 * multiplier; streak++; AccuracyDisplay.Text = "PERFECT!"; }
+                        else if (n.IsBetween(470, 530)) { score += 300 * multiplier; streak++; AccuracyDisplay.Text = "GREAT!"; }
+                        else if (n.IsBetween(460, 540)) { score += 150 * multiplier; streak++; AccuracyDisplay.Text = "GOOD!"; }
+                        else if (n.IsBetween(450, 550)) { score += 100 * multiplier; streak++; AccuracyDisplay.Text = "NORMAL!"; }
+                        else if (n.IsBetween(420, 585)) { score += 50 * multiplier; streak++; AccuracyDisplay.Text = "BAD"; }
+                        #endregion
+                        centrefx.Start();
+                        AnyChosenAtAll = true;
+                        n.IsToDelete = true;
+                        break;
+                    }
+                    if (e.KeyChar == Convert.ToChar("p") && n.tr == TapperRail.right)
+                    {
+                        #region POINTS!!!!
+                        if (n.IsBetween(490, 510)) { score += 600 * multiplier; streak++; AccuracyDisplay.Text = "PERFECT!"; }
+                        else if (n.IsBetween(470, 530)) { score += 300 * multiplier; streak++; AccuracyDisplay.Text = "GREAT!"; }
+                        else if (n.IsBetween(460, 540)) { score += 150 * multiplier; streak++; AccuracyDisplay.Text = "GOOD!"; }
+                        else if (n.IsBetween(450, 550)) { score += 100 * multiplier; streak++; AccuracyDisplay.Text = "NORMAL!"; }
+                        else if (n.IsBetween(420, 585)) { score += 50 * multiplier; streak++; AccuracyDisplay.Text = "BAD"; }
+                        #endregion
+                        rightfx.Start();
                         AnyChosenAtAll = true;
                         n.IsToDelete = true;
                         break;
