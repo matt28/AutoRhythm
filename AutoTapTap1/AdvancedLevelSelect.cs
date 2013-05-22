@@ -27,5 +27,11 @@ namespace AutoTapTap1
             this.Hide();
             tf.Show();
         }
+
+        private void closing(object sender, FormClosingEventArgs e)
+        {
+            Form tf = new MainMenu();
+            tf.Show();
+        }
     }
 }

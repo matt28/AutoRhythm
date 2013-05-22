@@ -175,6 +175,7 @@
             this.Margin = new System.Windows.Forms.Padding(6, 4, 6, 4);
             this.Name = "AdvancedLevelSelect";
             this.Text = "Any song rhythm tap game! (Advanced difficulty select)";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.closing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

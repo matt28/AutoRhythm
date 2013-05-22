@@ -40,7 +40,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.NoteFreq = new System.Windows.Forms.Label();
             this.NF2 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.ScoreDisplay = new System.Windows.Forms.Label();
             this.MultiplierDisplay = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -56,7 +55,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.SlateBlue;
+            this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(45)))));
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
@@ -139,14 +138,15 @@
             // 
             // label1
             // 
-            this.label1.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
             this.label1.Font = new System.Drawing.Font("Monotype Corsiva", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.label1.Location = new System.Drawing.Point(50, 500);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(650, 28);
+            this.label1.Size = new System.Drawing.Size(668, 28);
             this.label1.TabIndex = 9;
-            this.label1.Text = "TAP AREA TAP AREA TAP AREA TAP AREA TAP AREA TAP AREA";
+            this.label1.Text = "/////////////////////////////////////////////////////////////////////////////////" +
+    "";
             // 
             // NoteFreq
             // 
@@ -166,34 +166,25 @@
             this.NF2.TabIndex = 11;
             this.NF2.Text = "label2";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.label2.Font = new System.Drawing.Font("Lucida Console", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(327, 405);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(85, 16);
-            this.label2.TabIndex = 12;
-            this.label2.Text = "POINTS:";
-            // 
             // ScoreDisplay
             // 
             this.ScoreDisplay.AutoSize = true;
-            this.ScoreDisplay.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.ScoreDisplay.Font = new System.Drawing.Font("Lucida Console", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ScoreDisplay.Location = new System.Drawing.Point(407, 405);
+            this.ScoreDisplay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(30)))), ((int)(((byte)(15)))));
+            this.ScoreDisplay.Font = new System.Drawing.Font("Matura MT Script Capitals", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ScoreDisplay.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.ScoreDisplay.Location = new System.Drawing.Point(327, 369);
             this.ScoreDisplay.Name = "ScoreDisplay";
-            this.ScoreDisplay.Size = new System.Drawing.Size(19, 16);
+            this.ScoreDisplay.Size = new System.Drawing.Size(34, 36);
             this.ScoreDisplay.TabIndex = 13;
             this.ScoreDisplay.Text = "0";
             // 
             // MultiplierDisplay
             // 
             this.MultiplierDisplay.AutoSize = true;
-            this.MultiplierDisplay.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.MultiplierDisplay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(30)))), ((int)(((byte)(15)))));
             this.MultiplierDisplay.Font = new System.Drawing.Font("Lucida Console", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MultiplierDisplay.Location = new System.Drawing.Point(458, 434);
+            this.MultiplierDisplay.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.MultiplierDisplay.Location = new System.Drawing.Point(467, 434);
             this.MultiplierDisplay.Name = "MultiplierDisplay";
             this.MultiplierDisplay.Size = new System.Drawing.Size(19, 16);
             this.MultiplierDisplay.TabIndex = 14;
@@ -202,8 +193,9 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(30)))), ((int)(((byte)(15)))));
             this.label3.Font = new System.Drawing.Font("Lucida Console", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.SystemColors.ActiveCaption;
             this.label3.Location = new System.Drawing.Point(483, 434);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(19, 16);
@@ -213,8 +205,9 @@
             // streakdisplay
             // 
             this.streakdisplay.AutoSize = true;
-            this.streakdisplay.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.streakdisplay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(30)))), ((int)(((byte)(15)))));
             this.streakdisplay.Font = new System.Drawing.Font("Lucida Console", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.streakdisplay.ForeColor = System.Drawing.SystemColors.ActiveCaption;
             this.streakdisplay.Location = new System.Drawing.Point(381, 434);
             this.streakdisplay.Name = "streakdisplay";
             this.streakdisplay.Size = new System.Drawing.Size(19, 16);
@@ -223,8 +216,9 @@
             // 
             // AccuracyDisplay
             // 
-            this.AccuracyDisplay.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.AccuracyDisplay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(30)))), ((int)(((byte)(15)))));
             this.AccuracyDisplay.Font = new System.Drawing.Font("Lucida Console", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AccuracyDisplay.ForeColor = System.Drawing.SystemColors.ActiveCaption;
             this.AccuracyDisplay.Location = new System.Drawing.Point(327, 457);
             this.AccuracyDisplay.Name = "AccuracyDisplay";
             this.AccuracyDisplay.Size = new System.Drawing.Size(122, 43);
@@ -249,8 +243,9 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.label6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(30)))), ((int)(((byte)(15)))));
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.SystemColors.ActiveCaption;
             this.label6.Location = new System.Drawing.Point(327, 434);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(57, 16);
@@ -271,12 +266,11 @@
             this.ComboView.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ComboView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.ComboView.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ComboView.Location = new System.Drawing.Point(100, 354);
+            this.ComboView.Location = new System.Drawing.Point(134, 354);
             this.ComboView.Name = "ComboView";
             this.ComboView.Size = new System.Drawing.Size(140, 31);
             this.ComboView.TabIndex = 22;
             this.ComboView.Text = "label7";
-            this.ComboView.Click += new System.EventHandler(this.ComboView_Click);
             // 
             // GameForm
             // 
@@ -293,7 +287,6 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.MultiplierDisplay);
             this.Controls.Add(this.ScoreDisplay);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.NF2);
             this.Controls.Add(this.NoteFreq);
             this.Controls.Add(this.label1);
@@ -308,7 +301,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Name = "GameForm";
             this.Text = "Any song rhythm tap game!";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GameFormClosed);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GameFormClosing);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KP);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
@@ -330,7 +323,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label NoteFreq;
         private System.Windows.Forms.Label NF2;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label ScoreDisplay;
         private System.Windows.Forms.Label MultiplierDisplay;
         private System.Windows.Forms.Label label3;

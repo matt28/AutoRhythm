@@ -70,5 +70,11 @@ namespace AutoTapTap1
             Form tf = new AdvancedLevelSelect();
             tf.Show();
         }
+
+        private void closing(object sender, FormClosingEventArgs e)
+        {
+            Form tf = new MainMenu();
+            tf.Show();
+        }
     }
 }

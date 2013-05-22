@@ -884,7 +884,7 @@ namespace AutoTapTap1
         }
         #endregion
         #region GameFormClosed
-        private void GameFormClosed(object sender, FormClosedEventArgs e)
+        private void GameFormClosing(object sender, FormClosingEventArgs e)
         {
             sp.Dispose();
             br.Dispose();
@@ -893,11 +893,6 @@ namespace AutoTapTap1
             tf.Show();
         }
         #endregion
-
-        private void ComboView_Click(object sender, EventArgs e)
-        {
-
-        }
     }
     #region enums
     #region Frequency enum

@@ -22,17 +22,20 @@ namespace AutoTapTap1
 
         private void StartButtonClicked(object sender, EventArgs e)
         {
-            MessageBox.Show("Choose a .wav file you want to play with!");
+            MessageBox.Show("Choose a song!");
             OFD.ShowDialog();
-            GameForm.directory = OFD.FileName;
-            this.Hide();
-            Form tf = new LevelSelectForm();
-            tf.Show();
+            if (OFD.FileName != "")
+            {
+                GameForm.directory = OFD.FileName;
+                this.Hide();
+                Form tf = new LevelSelectForm();
+                tf.Show();
+            }
         }
 
         private void MainFormClosed(object sender, FormClosingEventArgs e)
         {
-            MessageBox.Show("GoodBye! :)");
+            MessageBox.Show("GoodBye! :)", "Exit", MessageBoxButtons.OK);
             Application.Exit();
         }
     }
