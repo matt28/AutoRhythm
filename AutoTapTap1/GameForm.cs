@@ -189,7 +189,7 @@ namespace AutoTapTap1
             #region TRY!
             try
             {
-
+                //FIX SOME RANDOM CRASH GLITCH!
                 ComboView.BackColor = Color.FromArgb(fail, Convert.ToInt32(feeling * 1.5), intensity);
                 long elaspedtimestatic = time.ElapsedMilliseconds;
                 time.Restart();
@@ -226,15 +226,15 @@ namespace AutoTapTap1
                     leftfx.Stop();
                 if (centrefx.ElapsedMilliseconds >= 50)
                     centrefx.Stop();
-                if (rightfx.ElapsedMilliseconds > 50)
+                if (rightfx.ElapsedMilliseconds >= 50)
                     rightfx.Stop();
 
                 if (leftfx.ElapsedMilliseconds != 0)
-                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)((50 - leftfx.ElapsedMilliseconds) * 127 / 50.0), 255, 200, 200)), 100, 440, 50, 30);
+                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)((60 - leftfx.ElapsedMilliseconds) * 127 / 50.0), 255, 200, 200)), 100, 440, 50, 30);
                 if (centrefx.ElapsedMilliseconds != 0)
-                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)((50 - centrefx.ElapsedMilliseconds) * 127 / 50.0), 255, 255, 200)), 180, 440, 50, 30);
+                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)((60 - centrefx.ElapsedMilliseconds) * 127 / 50.0), 255, 255, 200)), 180, 440, 50, 30);
                 if (rightfx.ElapsedMilliseconds != 0)
-                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)((50 - rightfx.ElapsedMilliseconds) * 127 / 50.0), 200, 255, 200)), 260, 440, 50, 30);
+                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)((60 - rightfx.ElapsedMilliseconds) * 127 / 50.0), 200, 255, 200)), 260, 440, 50, 30);
                 #endregion
                 #region for loop for notes
                 for (int Count = 0; Count < notes.Count; Count++)
@@ -812,6 +812,10 @@ namespace AutoTapTap1
                 vldTimer.Stop();
                 TimeSinceReadingStarted.Stop();
             }
+            catch
+            {
+                
+            }
             #endregion
             #region end stuff...
             System.Threading.Thread.Sleep(0);
@@ -892,7 +896,10 @@ namespace AutoTapTap1
                         else if (n.IsBetween(450, 550)) { score += 100 * multiplier; streak++; AccuracyDisplay.Text = "NORMAL!"; }
                         else if (n.IsBetween(420, 585)) { score += 50 * multiplier; streak++; AccuracyDisplay.Text = "BAD"; }
                         #endregion
-                        leftfx.Start();
+                        if (leftfx.IsRunning)
+                            leftfx.Restart();
+                        else
+                            leftfx.Start();
                         AnyChosenAtAll = true;
                         n.IsToDelete = true;
                         break;
@@ -906,7 +913,10 @@ namespace AutoTapTap1
                         else if (n.IsBetween(450, 550)) { score += 100 * multiplier; streak++; AccuracyDisplay.Text = "NORMAL!"; }
                         else if (n.IsBetween(420, 585)) { score += 50 * multiplier; streak++; AccuracyDisplay.Text = "BAD"; }
                         #endregion
-                        centrefx.Start();
+                        if (centrefx.IsRunning)
+                            centrefx.Restart();
+                        else
+                            centrefx.Start();
                         AnyChosenAtAll = true;
                         n.IsToDelete = true;
                         break;
@@ -920,7 +930,10 @@ namespace AutoTapTap1
                         else if (n.IsBetween(450, 550)) { score += 100 * multiplier; streak++; AccuracyDisplay.Text = "NORMAL!"; }
                         else if (n.IsBetween(420, 585)) { score += 50 * multiplier; streak++; AccuracyDisplay.Text = "BAD"; }
                         #endregion
-                        rightfx.Start();
+                        if (rightfx.IsRunning)
+                            rightfx.Restart();
+                        else
+                            rightfx.Start();
                         AnyChosenAtAll = true;
                         n.IsToDelete = true;
                         break;
