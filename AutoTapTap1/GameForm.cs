@@ -189,12 +189,12 @@ namespace AutoTapTap1
             #region TRY!
             try
             {
-                //FIX SOME RANDOM CRASH GLITCH!
                 ComboView.BackColor = Color.FromArgb(fail, Convert.ToInt32(feeling * 1.5), intensity);
                 long elaspedtimestatic = time.ElapsedMilliseconds;
                 time.Restart();
                 VFirst = VSec;
                 e.Graphics.Clear(Color.FromArgb(fail, Convert.ToInt32(feeling * 1.5), intensity));
+                #region random graphics
                 #region volbar
                 if (BytesPerSample == 1)
                 {
@@ -222,20 +222,24 @@ namespace AutoTapTap1
                 }
                 #endregion
                 #region HitFX
-                if (leftfx.ElapsedMilliseconds >= 50)
-                    leftfx.Stop();
-                if (centrefx.ElapsedMilliseconds >= 50)
-                    centrefx.Stop();
-                if (rightfx.ElapsedMilliseconds >= 50)
-                    rightfx.Stop();
+                if (leftfx.ElapsedMilliseconds >= 250)
+                    leftfx.Reset();
+                if (centrefx.ElapsedMilliseconds >= 250)
+                    centrefx.Reset();
+                if (rightfx.ElapsedMilliseconds >= 250)
+                    rightfx.Reset();
 
-                if (leftfx.ElapsedMilliseconds != 0)
-                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)((60 - leftfx.ElapsedMilliseconds) * 127 / 50.0), 255, 200, 200)), 100, 440, 50, 30);
-                if (centrefx.ElapsedMilliseconds != 0)
-                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)((60 - centrefx.ElapsedMilliseconds) * 127 / 50.0), 255, 255, 200)), 180, 440, 50, 30);
-                if (rightfx.ElapsedMilliseconds != 0)
-                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)((60 - rightfx.ElapsedMilliseconds) * 127 / 50.0), 200, 255, 200)), 260, 440, 50, 30);
+                //The crash glitch problem is here. Don't know if it's fixed or not...
+                if (leftfx.ElapsedMilliseconds != 0 || leftfx.ElapsedMilliseconds > 250)
+                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)(250 - leftfx.ElapsedMilliseconds), 255, 140, 140)), 100, 480, 60, 30);
+                if (centrefx.ElapsedMilliseconds != 0 || centrefx.ElapsedMilliseconds > 250)
+                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)(250 - centrefx.ElapsedMilliseconds), 255, 255, 100)), 180, 480, 60, 30);
+                if (rightfx.ElapsedMilliseconds != 0 || rightfx.ElapsedMilliseconds > 250)
+                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)(250 - rightfx.ElapsedMilliseconds), 140, 255, 140)), 260, 480, 60, 30);
                 #endregion
+                #endregion
+
+                #region update and AI
                 #region for loop for notes
                 for (int Count = 0; Count < notes.Count; Count++)
                 {
@@ -510,61 +514,6 @@ namespace AutoTapTap1
                 if (BytesPerSample == 4 || (BytesPerSample == 2 && !IsStereo) && avc > 3)
                     VSec = mi / 65536.0 * 100.0;
                 #endregion
-                fms = ((VFirst - VSec) * 100 + fms) / 2;
-                #region Controls
-                #region milab
-                milab.Text = mi.ToString();
-                #endregion
-                #region RTime
-                RTime.Text = RTS.ElapsedMilliseconds.ToString();
-                #endregion
-                #region VF
-                VF.Text = VFirst.ToString();
-                #endregion
-                #region VS
-                VS.Text = VSec.ToString();
-                #endregion
-                #region FminS
-                FminS.Text = fms.ToString();
-                #endregion
-                #region avt
-                avt.Text = notes.Count.ToString();
-                #endregion
-                #region nw
-                nw.Text = AllowNote.ToString();
-                #endregion
-                #region NoteFreq
-                NoteFreq.Text = f.ToString();
-                #endregion
-                #region ScoreDisplay
-                ScoreDisplay.Text = score.ToString();
-                #endregion
-                #region MultiplierDisplay
-                MultiplierDisplay.Text = multiplier.ToString();
-                #endregion
-                #region streakdisplay
-                streakdisplay.Text = streak.ToString();
-                #endregion
-                #region ComboView
-                if (streak < 100)
-                {
-                    ComboView.Text = streak + " Hit";
-                    ComboView.ForeColor = Color.FromArgb(intensity, 190, 122, 60);
-                }
-                else
-                {
-                    ComboView.Text = streak + " HIT!!";
-                    ComboView.ForeColor = Color.FromArgb(intensity, 230, 90, 120);
-                }
-                if (intensity > 50 && streak > 30)
-                    ComboView.Visible = true;
-                else
-                    ComboView.Visible = false;
-                #endregion
-                #region BytesVis
-                BytesVis.Text = TimeSinceReadingStarted.ElapsedMilliseconds.ToString() + ", " + bytes + ", " + ((bytes - 36) / BytesPerSecond) + ", " + BytesPerSecond + ", " + br.BaseStream.Length;
-                #endregion
-                #endregion
                 #region notemaking
                 if (avc >= AvcNoteMakeLimit & AllowNote)
                 {
@@ -640,7 +589,6 @@ namespace AutoTapTap1
                                     }
                                 }
                                 #endregion
-                                NF2.Text = f.ToString();
                                 Waiting = true;
                                 NeedToTimeWait = true;
                             }
@@ -688,7 +636,6 @@ namespace AutoTapTap1
                                     }
                                 }
                                 #endregion
-                                NF2.Text = f.ToString();
                                 Waiting = true;
                                 NeedToTimeWait = true;
                             }
@@ -697,6 +644,48 @@ namespace AutoTapTap1
                     }
                     #endregion
                 }
+                #endregion
+                fms = ((VFirst - VSec) * 100 + fms) / 2;
+                #endregion
+
+                #region Controls
+                #region ScoreDisplay
+                ScoreDisplay.Text = score.ToString();
+                #endregion
+                #region MultiplierDisplay
+                MultiplierDisplay.Text = multiplier.ToString();
+                #endregion
+                #region streakdisplay
+                streakdisplay.Text = streak.ToString();
+                #endregion
+                #region ComboView
+                if (streak < 100)
+                {
+                    ComboView.Text = streak + " Hit";
+                    ComboView.ForeColor = Color.FromArgb(intensity, 190, 122, 60);
+                }
+                else
+                {
+                    ComboView.Text = streak + " HIT!!";
+                    ComboView.ForeColor = Color.FromArgb(intensity, 230, 90, 120);
+                }
+                if (intensity > 50 && streak > 30)
+                    ComboView.Visible = true;
+                else
+                    ComboView.Visible = false;
+                #endregion
+                #region BytesVis (aka MINUTES, SECONDS)
+                //Seconds to function display
+                double STFD = ((bytes - 36) / BytesPerSecond);
+
+                //Milliseconds
+                int ms = Convert.ToInt32((STFD * 1000) % 1000);
+                //Seconds
+                int s = Convert.ToInt32(STFD * 60);
+                //Minutes
+                int min = Convert.ToInt32(STFD / 60);
+                BytesVis.Text = "min: " + min.ToString() + ", s: " + s.ToString() + ", ms: " + ms.ToString();
+                #endregion
                 #endregion
                 if (notes.Count > 1)
                 {
@@ -715,7 +704,7 @@ namespace AutoTapTap1
                             }
                         }
                         if (n2 == null) break;
-                        if (Math.Abs(n2.y - n1.y) < 15)
+                        if (Math.Abs(n2.y - n1.y) < 15 && n1.y < 380)
                         {
                             notes.RemoveAt(i + j + 1);
                         }
@@ -814,7 +803,7 @@ namespace AutoTapTap1
             }
             catch
             {
-                
+
             }
             #endregion
             #region end stuff...
@@ -954,9 +943,10 @@ namespace AutoTapTap1
             #endregion
         }
         #endregion
-        #region GameFormClosed
+        #region GameFormClosing
         private void GameFormClosing(object sender, FormClosingEventArgs e)
         {
+            sp.Stop();
             sp.Dispose();
             br.Dispose();
             fs.Dispose();
