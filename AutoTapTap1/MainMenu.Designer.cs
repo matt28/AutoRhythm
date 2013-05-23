@@ -89,7 +89,7 @@
             this.Controls.Add(this.StartButton);
             this.Name = "MainMenu";
             this.Text = "Any song rhythm tap game! (Main Menu)";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFormClosed);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainFormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 

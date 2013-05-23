@@ -33,10 +33,10 @@ namespace AutoTapTap1
             }
         }
 
-        private void MainFormClosed(object sender, FormClosingEventArgs e)
+        private void MainFormClosed(object sender, FormClosedEventArgs e)
         {
-            MessageBox.Show("GoodBye! :)", "Exit", MessageBoxButtons.OK);
-            Application.Exit();
+            this.Dispose();
+            Application.ExitThread();
         }
     }
 }

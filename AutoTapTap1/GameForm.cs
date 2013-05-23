@@ -34,7 +34,7 @@ namespace AutoTapTap1
         public Random rndseed = new Random();
         public Random rnd;
         #endregion
-        #region Temporary intergers
+        #region Temporary Values
         public int ti;
         public int ti2;
         public int ti3;
@@ -44,6 +44,8 @@ namespace AutoTapTap1
         public int ti7;
         public int ti8;
         public int ti9;
+        public int min, s, ms;
+        public double STFD;
         #endregion
         #region Song variables
         public bool SongIsReadyToPlay = false;//This is true after 10 seconds of ElapsedMilliseconds of the timer
@@ -68,7 +70,7 @@ namespace AutoTapTap1
         #region ArrayLists
         public ArrayList noteIDs = new ArrayList();
         public ArrayList notes = new ArrayList();
-        public ArrayList VolLines = new ArrayList();
+        public ArrayList beatcircles = new ArrayList();
         #endregion
         #region Difficulty vars
         public static int avcval;// 2 = super hard 40 = super easy
@@ -124,6 +126,7 @@ namespace AutoTapTap1
         public int streak = 0;
         #endregion
         #endregion
+
         #region The form1 initialisation function
         public GameForm()
         {
@@ -183,59 +186,33 @@ namespace AutoTapTap1
             timer.Start();
         }
         #endregion
-        #region The OnPaint function
+
+        #region The OnPaint function for Updating
         private void OnPaint(object sender, PaintEventArgs e)
         {
             #region TRY!
             try
             {
-                ComboView.BackColor = Color.FromArgb(fail, Convert.ToInt32(feeling * 1.5), intensity);
+                ComboView.BackColor = Color.FromArgb(fail, Convert.ToInt32(feeling), intensity);
                 long elaspedtimestatic = time.ElapsedMilliseconds;
                 time.Restart();
                 VFirst = VSec;
-                e.Graphics.Clear(Color.FromArgb(fail, Convert.ToInt32(feeling * 1.5), intensity));
+                e.Graphics.Clear(Color.FromArgb(fail, Convert.ToInt32(feeling), intensity));
                 #region random graphics
-                #region volbar
-                if (BytesPerSample == 1)
-                {
-                    e.Graphics.FillRectangle(new SolidBrush(Color.AliceBlue), 0, 10, 50, mi / 256f * 550f);
-                    if (rnd.Next(4) == 1)
-                        VolLines.Add(new VolLineDisplay(Convert.ToInt32(mi / 256.0 * 100.0)));
-                }
-                if (BytesPerSample == 2 && IsStereo == false)
-                {
-                    e.Graphics.FillRectangle(new SolidBrush(Color.AliceBlue), 0, 10, 50, mi / 65536f * 550f);
-                    if (rnd.Next(4) == 1)
-                        VolLines.Add(new VolLineDisplay(Convert.ToInt32(mi / 65536.0 * 100.0)));
-                }
-                if (BytesPerSample == 2 && IsStereo)
-                {
-                    e.Graphics.FillRectangle(new SolidBrush(Color.AliceBlue), 0, 10, 50, mi / 256f * 550f);
-                    if (rnd.Next(4) == 1)
-                        VolLines.Add(new VolLineDisplay(Convert.ToInt32(mi / 256.0 * 100.0)));
-                }
-                if (BytesPerSample == 4)
-                {
-                    e.Graphics.FillRectangle(new SolidBrush(Color.AliceBlue), 0, 10, 50, mi / 65536f * 550f);
-                    if (rnd.Next(4) == 1)
-                        VolLines.Add(new VolLineDisplay(Convert.ToInt32(mi / 65536.0 * 100.0)));
-                }
-                #endregion
                 #region HitFX
-                if (leftfx.ElapsedMilliseconds >= 250)
+                if (leftfx.ElapsedMilliseconds >= 150)
                     leftfx.Reset();
-                if (centrefx.ElapsedMilliseconds >= 250)
+                if (centrefx.ElapsedMilliseconds >= 150)
                     centrefx.Reset();
-                if (rightfx.ElapsedMilliseconds >= 250)
+                if (rightfx.ElapsedMilliseconds >= 150)
                     rightfx.Reset();
 
-                //The crash glitch problem is here. Don't know if it's fixed or not...
-                if (leftfx.ElapsedMilliseconds != 0 || leftfx.ElapsedMilliseconds > 250)
-                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)(250 - leftfx.ElapsedMilliseconds), 255, 140, 140)), 100, 480, 60, 30);
-                if (centrefx.ElapsedMilliseconds != 0 || centrefx.ElapsedMilliseconds > 250)
-                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)(250 - centrefx.ElapsedMilliseconds), 255, 255, 100)), 180, 480, 60, 30);
-                if (rightfx.ElapsedMilliseconds != 0 || rightfx.ElapsedMilliseconds > 250)
-                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)(250 - rightfx.ElapsedMilliseconds), 140, 255, 140)), 260, 480, 60, 30);
+                if (leftfx.ElapsedMilliseconds != 0 || leftfx.ElapsedMilliseconds > 150)
+                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)(150 - leftfx.ElapsedMilliseconds), 255, 140, 140)), 100, 480, 60, 30);
+                if (centrefx.ElapsedMilliseconds != 0 || centrefx.ElapsedMilliseconds > 150)
+                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)(150 - centrefx.ElapsedMilliseconds), 255, 255, 100)), 180, 480, 60, 30);
+                if (rightfx.ElapsedMilliseconds != 0 || rightfx.ElapsedMilliseconds > 150)
+                    e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb((int)(150 - rightfx.ElapsedMilliseconds), 140, 255, 140)), 260, 480, 60, 30);
                 #endregion
                 #endregion
 
@@ -244,7 +221,7 @@ namespace AutoTapTap1
                 for (int Count = 0; Count < notes.Count; Count++)
                 {
                     note n = notes[Count] as note;
-                    n.y += Convert.ToInt32(370.0 * elaspedtimestatic / 1000.0);
+                    n.y += Convert.ToInt32(300.0 * elaspedtimestatic / 1000.0);
                     if (n.IsToDelete)
                     {
                         if (intensity + 30 < 256)
@@ -271,26 +248,21 @@ namespace AutoTapTap1
                     HasDeleted = false;
                 }
                 #endregion
-                #region for loop for VolLineDisplay
-                for (int count = 0; count < VolLines.Count; count++)
+                #region BeatCircle loop
+                for (int count = 0; count < beatcircles.Count; count++)
                 {
-                    VolLineDisplay vld = VolLines[count] as VolLineDisplay;
-                    vld.y += Convert.ToInt32(370.0 * elaspedtimestatic / 1000.0);
-                    if (vld.lengthpx > 94)
-                        e.Graphics.DrawLine(new Pen(Color.FromArgb(170, 255, 30, 255), 5f), new Point(100, vld.y), new Point(100 + vld.lengthpx * 10, vld.y));
+                    BeatCircle c = beatcircles[count] as BeatCircle;
+                    if (c.BeDeleted)
+                    {
+                        beatcircles.Remove(c);
+                        continue;
+                    }
                     else
-                        e.Graphics.DrawLine(new Pen(Color.FromArgb(0x30FFFFFF), 2f), new Point(100, vld.y), new Point(100 + vld.lengthpx * 10, vld.y));
-                    if (vld.y > 500)
                     {
-                        feeling = vld.lengthpx;
-                        VolLines.RemoveAt(count);
-                        Deletedvld = true;
+                        c.Update();
+                        e.Graphics.FillEllipse(new SolidBrush(c.colour), c.x, c.y, c.radius, c.radius);
+                        beatcircles[count] = c;
                     }
-                    if (!Deletedvld)
-                    {
-                        VolLines[count] = vld as VolLineDisplay;
-                    }
-                    Deletedvld = false;
                 }
                 #endregion
                 #region avc settings
@@ -298,7 +270,7 @@ namespace AutoTapTap1
                     avc = 0;
                 #endregion
                 #region BaseStream setting
-                br.BaseStream.Position = bytes;
+                br.BaseStream.Position = bytes;//This will be temporarily changed to a latent play value, at feeling manip. region
                 #endregion
                 #region SongIsReadyToPlay thing...
                 if (timer.ElapsedMilliseconds > 3000)
@@ -497,7 +469,7 @@ namespace AutoTapTap1
                         #endregion
                         else
                         {
-                            MessageBox.Show("You're not using a wav file!!!");
+                            MessageBox.Show("You're not using a valid wav file!!!");
                         }
                         avc++;
                         if (avc == 1)
@@ -513,6 +485,62 @@ namespace AutoTapTap1
                     VSec = mi / 256.0 * 100.0;
                 if (BytesPerSample == 4 || (BytesPerSample == 2 && !IsStereo) && avc > 3)
                     VSec = mi / 65536.0 * 100.0;
+                #endregion
+                #region Feeling Manipulation (complex!)
+                //These are the byte position values that are currently played, not scanned in advance
+                //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                //timer starts 4666 ms before song starts... thats all
+                long latentbytes = Convert.ToInt64((timer.ElapsedMilliseconds - 4666) / 1000.0 * BytesPerSecond) + 36;
+                br.BaseStream.Position = latentbytes;
+                #region 1 byte mono
+                if (BytesPerSample == 1)//1 byte per sample
+                {
+                    ti9 = br.ReadByte();
+                    ti8 = br.ReadByte();
+                    ti7 = br.ReadByte();
+                    ti6 = br.ReadByte();
+                    int maxcurrent = Math.Max(Math.Max(ti9, ti8), Math.Max(ti7, ti6));
+                    int mincurrent = Math.Min(Math.Min(ti9, ti8), Math.Min(ti7, ti6));
+                    feeling = Convert.ToInt32(maxcurrent - mincurrent);
+                }
+                #endregion
+                #region 2 byte stereo (1 byte mono)
+                else if (BytesPerSample == 2 && IsStereo)//get average of each pair of 2 bytes per sample
+                {
+                    ti9 = Convert.ToInt32((br.ReadByte() + br.ReadByte()) / 2.0);
+                    ti8 = Convert.ToInt32((br.ReadByte() + br.ReadByte()) / 2.0);
+                    ti7 = Convert.ToInt32((br.ReadByte() + br.ReadByte()) / 2.0);
+                    ti6 = Convert.ToInt32((br.ReadByte() + br.ReadByte()) / 2.0);
+                    int maxcurrent = Math.Max(Math.Max(ti9, ti8), Math.Max(ti7, ti6));
+                    int mincurrent = Math.Min(Math.Min(ti9, ti8), Math.Min(ti7, ti6));
+                    feeling = Convert.ToInt32(maxcurrent - mincurrent);
+                }
+                #endregion
+                #region 4 byte stereo (2 byte mono)
+                else if (BytesPerSample == 4)//get two 2-byte values and get average
+                {
+                    ti9 = Convert.ToInt32(((br.ReadByte() + br.ReadByte() * 2 ^ 8) + (br.ReadByte() + br.ReadByte() * 2 ^ 8)) / 2.0);
+                    ti8 = Convert.ToInt32(((br.ReadByte() + br.ReadByte() * 2 ^ 8) + (br.ReadByte() + br.ReadByte() * 2 ^ 8)) / 2.0);
+                    ti7 = Convert.ToInt32(((br.ReadByte() + br.ReadByte() * 2 ^ 8) + (br.ReadByte() + br.ReadByte() * 2 ^ 8)) / 2.0);
+                    ti6 = Convert.ToInt32(((br.ReadByte() + br.ReadByte() * 2 ^ 8) + (br.ReadByte() + br.ReadByte() * 2 ^ 8)) / 2.0);
+                    int maxcurrent = Math.Max(Math.Max(ti9, ti8), Math.Max(ti7, ti6));
+                    int mincurrent = Math.Min(Math.Min(ti9, ti8), Math.Min(ti7, ti6));
+                    feeling = Convert.ToInt32((maxcurrent - mincurrent) / (2 ^ 8));
+                }
+                #endregion
+                #region 2 byte mono
+                else if(BytesPerSample == 2 && !IsStereo)//use one 2-byte value
+                {
+                    ti9 = Convert.ToInt32(br.ReadByte() + br.ReadByte() * 2 ^ 8);
+                    ti8 = Convert.ToInt32(br.ReadByte() + br.ReadByte() * 2 ^ 8);
+                    ti7 = Convert.ToInt32(br.ReadByte() + br.ReadByte() * 2 ^ 8);
+                    ti6 = Convert.ToInt32(br.ReadByte() + br.ReadByte() * 2 ^ 8);
+                    int maxcurrent = Math.Max(Math.Max(ti9, ti8), Math.Max(ti7, ti6));
+                    int mincurrent = Math.Min(Math.Min(ti9, ti8), Math.Min(ti7, ti6));
+                    feeling = Convert.ToInt32((maxcurrent - mincurrent) / (2 ^ 8));
+                }
+                #endregion
+                br.BaseStream.Position = bytes;
                 #endregion
                 #region notemaking
                 if (avc >= AvcNoteMakeLimit & AllowNote)
@@ -645,6 +673,14 @@ namespace AutoTapTap1
                     #endregion
                 }
                 #endregion
+                #region CreateBeatCircles when amplitude
+                if (feeling > 160)
+                {
+                    beatcircles.Add(new BeatCircle(rnd.Next(0, 780),
+                        rnd.Next(0, 550), feeling * 10, Convert.ToInt32(feeling / 2.0),
+                        Color.FromArgb(rnd.Next(0, 100), rnd.Next(0, 200), rnd.Next(0, 200))));
+                }
+                #endregion
                 fms = ((VFirst - VSec) * 100 + fms) / 2;
                 #endregion
 
@@ -676,14 +712,14 @@ namespace AutoTapTap1
                 #endregion
                 #region BytesVis (aka MINUTES, SECONDS)
                 //Seconds to function display
-                double STFD = ((bytes - 36) / BytesPerSecond);
+                STFD = ((bytes - 36) / BytesPerSecond);
 
                 //Milliseconds
-                int ms = Convert.ToInt32((STFD * 1000) % 1000);
+                ms = Convert.ToInt32((STFD * 1000) % 1000);
                 //Seconds
-                int s = Convert.ToInt32(STFD * 60);
+                s = Convert.ToInt32(STFD % 60);
                 //Minutes
-                int min = Convert.ToInt32(STFD / 60);
+                min = Convert.ToInt32(STFD / 60);
                 BytesVis.Text = "min: " + min.ToString() + ", s: " + s.ToString() + ", ms: " + ms.ToString();
                 #endregion
                 #endregion
@@ -795,9 +831,9 @@ namespace AutoTapTap1
             #region CATCH!
             catch (System.IO.EndOfStreamException)
             {
-
                 RTS.Stop();
                 time.Stop();
+                timer.Stop();
                 vldTimer.Stop();
                 TimeSinceReadingStarted.Stop();
             }
@@ -814,6 +850,7 @@ namespace AutoTapTap1
             #endregion
         }
         #endregion
+
         #region KeyPress
         private void KP(object sender, KeyPressEventArgs e)
         {
@@ -891,6 +928,12 @@ namespace AutoTapTap1
                             leftfx.Start();
                         AnyChosenAtAll = true;
                         n.IsToDelete = true;
+                        #region make BeatCircles
+                        for (int countcount = 0; countcount < 4; countcount++)
+                            beatcircles.Add(new BeatCircle(rnd.Next(0, 780),
+                                rnd.Next(0, 550), feeling * 10, Convert.ToInt32(feeling / 2.0),
+                                Color.FromArgb(rnd.Next(0, 100), rnd.Next(0, 200), rnd.Next(0, 200))));
+                        #endregion
                         break;
                     }
                     if (e.KeyChar == Convert.ToChar("o") && n.tr == TapperRail.centre)
@@ -908,6 +951,12 @@ namespace AutoTapTap1
                             centrefx.Start();
                         AnyChosenAtAll = true;
                         n.IsToDelete = true;
+                        #region make BeatCircles
+                        for (int countcount = 0; countcount < 4; countcount++)
+                            beatcircles.Add(new BeatCircle(rnd.Next(0, 780),
+                                rnd.Next(0, 550), feeling * 10, Convert.ToInt32(feeling / 2.0),
+                                Color.FromArgb(rnd.Next(0, 100), rnd.Next(0, 200), rnd.Next(0, 200))));
+                        #endregion
                         break;
                     }
                     if (e.KeyChar == Convert.ToChar("p") && n.tr == TapperRail.right)
@@ -925,6 +974,12 @@ namespace AutoTapTap1
                             rightfx.Start();
                         AnyChosenAtAll = true;
                         n.IsToDelete = true;
+                        #region make BeatCircles
+                        for (int countcount = 0; countcount < 4; countcount++)
+                            beatcircles.Add(new BeatCircle(rnd.Next(0, 780),
+                                rnd.Next(0, 550), feeling * 10, Convert.ToInt32(feeling / 2.0),
+                                Color.FromArgb(rnd.Next(0, 100), rnd.Next(0, 200), rnd.Next(0, 200))));
+                        #endregion
                         break;
                     }
                 }
@@ -943,6 +998,7 @@ namespace AutoTapTap1
             #endregion
         }
         #endregion
+
         #region GameFormClosing
         private void GameFormClosing(object sender, FormClosingEventArgs e)
         {
@@ -978,8 +1034,6 @@ namespace AutoTapTap1
     }
     #endregion
     #endregion
-    #region Other functions
-    #endregion
     #region note class
     public class note
     {
@@ -998,15 +1052,43 @@ namespace AutoTapTap1
         }
     }
     #endregion
-    #region VolLineDisplayClass
-    public class VolLineDisplay
+    #region BeatCircle class
+    public class BeatCircle
     {
-        public int lengthpx;
-        public int y;
-        public VolLineDisplay(int lengthpx)
+        public int x, y;
+        public int initradius;//Original starting radius
+        public int radius;
+        public Stopwatch ExistingTime;
+        public int MillisecToLast;
+        public Color colour;
+        public bool BeDeleted = false;
+
+        public BeatCircle(int x, int y, int MillisecToLast, int radius, Color colour)
         {
-            y = 0;
-            this.lengthpx = lengthpx;
+            this.x = x;
+            this.y = y;
+            this.colour = colour;
+            colour = Color.FromArgb(100, colour);
+            this.MillisecToLast = MillisecToLast;
+            this.radius = this.initradius = radius;
+            ExistingTime = new Stopwatch();
+            ExistingTime.Start();
+        }
+        public void Update()
+        {
+            if (!BeDeleted)
+            {
+                if (ExistingTime.ElapsedMilliseconds > MillisecToLast)
+                {
+                    BeDeleted = true;
+                    return;
+                }
+                else
+                {
+                    radius = Convert.ToInt32(initradius - (ExistingTime.ElapsedMilliseconds / MillisecToLast * initradius * 1.0));
+                    colour = Color.FromArgb(Convert.ToInt32(100 - (ExistingTime.ElapsedMilliseconds / MillisecToLast * 100.0)), colour);
+                }
+            }
         }
     }
     #endregion

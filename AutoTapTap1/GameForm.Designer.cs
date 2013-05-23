@@ -150,11 +150,11 @@
             // BytesVis
             // 
             this.BytesVis.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(30)))), ((int)(((byte)(15)))));
-            this.BytesVis.Font = new System.Drawing.Font("Lucida Console", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BytesVis.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BytesVis.ForeColor = System.Drawing.SystemColors.ActiveCaption;
             this.BytesVis.Location = new System.Drawing.Point(327, 419);
             this.BytesVis.Name = "BytesVis";
-            this.BytesVis.Size = new System.Drawing.Size(122, 15);
+            this.BytesVis.Size = new System.Drawing.Size(179, 15);
             this.BytesVis.TabIndex = 21;
             this.BytesVis.Text = "TimeLabel";
             // 
